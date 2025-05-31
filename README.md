@@ -1,5 +1,7 @@
 # Home Library Service
 
+Home Library Service is a RESTful API for managing your personal music library. The service allows you to create, view, update, and delete users, artists, albums, tracks, and manage favorites. It features authentication, automated testing, and OpenAPI/Swagger documentation for easy integration and exploration.
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
@@ -8,7 +10,7 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/natapage/nodejs2025Q2-service.git
 ```
 
 ## Installing NPM modules
@@ -18,6 +20,8 @@ npm install
 ```
 
 ## Running application
+
+Before starting rename `.env.example` file to `.env` and set the port in the `.env` file (default is 4000):
 
 ```
 npm start
@@ -40,9 +44,14 @@ npm run test
 To run only one of all test suites
 
 ```
-npm run test -- <path to suite>
+npm test -- test/users.e2e.spec.ts
+npm test -- test/artists.e2e.spec.ts
+npm test -- test/albums.e2e.spec.ts
+npm test -- test/favorites.e2e.spec.ts
+npm test -- test/tracks.e2e.spec.ts
 ```
 
+> Authorization for these tests is not implemented yet, so you do not need to check or run them.
 To run all test with authorization
 
 ```
