@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     build: .
-    image: natapage/nodejs2025q2-service-app:latest
+    image: natapage/nodejs2025q2-service:latest
     command: npm run start:dev
     ports:
       - '${PORT:-4000}:${PORT:-4000}'
