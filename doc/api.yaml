@@ -16,9 +16,6 @@ tags:
   - name: favorites
     description: Operations about user favorites
 
-servers:
-  - url: /api
-
 components:
   schemas:
     User:
