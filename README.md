@@ -1,37 +1,43 @@
 # Home Library Service
 
-Home Library Service is a RESTful API for managing your personal music library. The service allows you to create, view, update, and delete users, artists, albums, tracks, and manage favorites. It features authentication, automated testing, and OpenAPI/Swagger documentation for easy integration and exploration.
+Home Library Service is a RESTful API for managing your personal music library. The service allows you to create, view, update, and delete users, artists, albums, tracks, and manage favorites. It features authentication, containerization with Docker, and OpenAPI/Swagger documentation for easy integration and exploration.
 
-## Prerequisites
+## Getting Started with Docker (Recommended)
 
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+This is the recommended way to run the application.
 
-## Downloading
+### Prerequisites
 
-```
+*   [Git](https://git-scm.com/downloads)
+*   [Docker](https://www.docker.com/products/docker-desktop/) and [Docker Compose](https://docs.docker.com/compose/install/)
+
+### 1. Clone the Repository
+
+```bash
 git clone https://github.com/natapage/nodejs2025Q2-service.git
+cd nodejs2025Q2-service
+git checkout hl-part-2-development
 ```
 
-## Installing NPM modules
+### 2. Create Environment File
 
-```
-npm install
-```
+Create a `.env` file by copying the example file. This file contains the necessary environment variables for the application and database.
 
-## Running application
-
-Before starting rename `.env.example` file to `.env` and set the port in the `.env` file (default is 4000):
-
-```
-npm start
+```bash
+cp .env.example .env
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+### 3. Build, Run, and Migrate
 
-## Testing
+Use a single command to build the images, start the containers, and run the database migrations.
+
+```bash
+npm run start:docker
+```
+
+This command executes the `docker-compose up -d --build` and `npx prisma migrate dev` steps for you.
+
+### 4.Testing
 
 After application running open new terminal and enter:
 
@@ -51,31 +57,71 @@ npm test -- test/favorites.e2e.spec.ts
 npm test -- test/tracks.e2e.spec.ts
 ```
 
-> Authorization for these tests is not implemented yet, so you do not need to check or run them.
-To run all test with authorization
+### 5. Accessing the Application
 
-```
-npm run test:auth
-```
+*   **API Documentation (Swagger):** [http://localhost:4000/doc](http://localhost:4000/doc)
+*   **Application Logs:** `docker-compose logs -f app`
+*   **Database Logs:** `docker-compose logs -f postgres-db`
 
-To run only specific test suite with authorization
+### 6. Stopping the Application
 
-```
-npm run test:auth -- <path to suite>
-```
-
-### Auto-fix and format
-
-```
-npm run lint
+To stop the containers, run:
+```bash
+docker-compose down
 ```
 
+This will stop and remove the containers.
+
+## Local Development (Without Docker)
+
+These instructions are for running the application directly on your machine without using Docker.
+
+### 1. Clone and Install
+
+```bash
+git clone https://github.com/natapage/nodejs2025Q2-service.git
+cd nodejs2025Q2-service
+git checkout hl-part-2-development
+npm install
 ```
-npm run format
+
+### 2. Configure Environment
+
+Create a `.env` file and update the `DATABASE_URL` to point to your local PostgreSQL instance.
+
+```bash
+cp .env.example .env
+```
+_For Windows, you can use `copy .env.example .env`_
+
+**Edit `.env` and set your `DATABASE_URL`:**
+`DATABASE_URL="postgresql://YOUR_USER:YOUR_PASSWORD@localhost:5432/YOUR_DATABASE?schema=public"`
+
+### 3. Run Migrations
+```bash
+npx prisma migrate dev
 ```
 
-### Debugging in VSCode
+### 4. Run the App
 
-Press <kbd>F5</kbd> to debug.
+```bash
+npm run start:dev
+```
 
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+## Testing
+
+After the application is running, open a new terminal and enter:
+
+To run all tests:
+```bash
+npm run test
+```
+
+To run a specific test suite:
+```bash
+npm test -- test/users.e2e.spec.ts
+```
+
+## License
+
+This project is licensed under the MIT License.
