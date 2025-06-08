@@ -4,6 +4,7 @@ services:
   app:
     build: .
     image: natapage/nodejs2025q2-service-app:latest
+    command: npm run start:dev
     ports:
       - '${PORT:-4000}:${PORT:-4000}'
     env_file:
@@ -11,10 +12,14 @@ services:
     environment:
       PORT: ${PORT:-4000}
       DATABASE_URL: postgresql://${DB_USER:-user}:${DB_PASSWORD:-password}@postgres-db:5432/${DB_NAME:-mydatabase}
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - postgres-db
     networks:
       - my-network
+    restart: on-failure
 
   postgres-db:
     image: postgres:16-alpine
