@@ -1,30 +1,21 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import * as fs from 'fs';
-import * as path from 'path';
+import { SwaggerModule, OpenAPIObject } from '@nestjs/swagger';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
+import * as yaml from 'js-yaml';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
   const port = process.env.PORT || 4000;
 
-  const config = new DocumentBuilder()
-    .setTitle('Home Library Service')
-    .setDescription('Home music library service')
-    .setVersion('1.0.0')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
+  // Load the OpenAPI specification from the YAML file
+  const docPath = join(__dirname, '..', 'doc', 'api.yaml');
+  const docFile = await readFile(docPath, 'utf8');
+  const document = yaml.load(docFile) as OpenAPIObject;
 
-  const docDir = path.join(__dirname, '..', 'doc');
-  if (!fs.existsSync(docDir)) {
-    fs.mkdirSync(docDir);
-  }
-  fs.writeFileSync(
-    path.join(docDir, 'api-generated.json'),
-    JSON.stringify(document, null, 2),
-  );
-
+  // Set up Swagger UI using the loaded document
   SwaggerModule.setup('doc', app, document);
 
   await app.listen(port);

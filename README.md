@@ -19,6 +19,11 @@ cd nodejs2025Q2-service
 git checkout hl-part-2-development
 ```
 
+After switching the branch, install the project dependencies:
+```bash
+npm install
+```
+
 ### 2. Create Environment File
 
 Create a `.env` file by copying the example file. This file contains the necessary environment variables for the application and database.
@@ -82,6 +87,10 @@ These instructions are for running the application directly on your machine with
 git clone https://github.com/natapage/nodejs2025Q2-service.git
 cd nodejs2025Q2-service
 git checkout hl-part-2-development
+```
+
+After switching the branch, install the project dependencies:
+```bash
 npm install
 ```
 

@@ -24,6 +24,7 @@ RUN npm ci && npm cache clean --force
 
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/prisma ./prisma
+COPY --from=build /usr/src/app/doc ./doc
 
 EXPOSE 4000
 
