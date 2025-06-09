@@ -1,49 +1,142 @@
 # Home Library Service
 
-Home Library Service is a RESTful API for managing your personal music library. The service allows you to create, view, update, and delete users, artists, albums, tracks, and manage favorites. It features authentication, automated testing, and OpenAPI/Swagger documentation for easy integration and exploration.
+Home Library Service is a RESTful API for managing your personal music library. The service allows you to create, view, update, and delete users, artists, albums, tracks, and manage favorites. It features authentication, containerization with Docker, and OpenAPI/Swagger documentation for easy integration and exploration.
 
-## Prerequisites
+## Getting Started with Docker
 
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+This section provides two ways to run the application using Docker.
 
-## Downloading
+### Option 1: Build and Run Locally (for development)
 
-```
+This is the recommended way if you are developing the application. It will build the Docker image from your local source code.
+
+#### 1. Clone the Repository
+
+```bash
 git clone https://github.com/natapage/nodejs2025Q2-service.git
+cd nodejs2025Q2-service
+git checkout hl-part-2-development
 ```
 
-## Installing NPM modules
-
-```
+#### 2. Install Dependencies
+```bash
 npm install
 ```
 
-## Running application
+#### 3. Create Environment File
 
-Before starting rename `.env.example` file to `.env` and set the port in the `.env` file (default is 4000):
+Create a `.env` file by copying the example file. This file contains the necessary environment variables for the application and database.
 
+```bash
+cp .env.example .env
 ```
-npm start
+
+#### 4. Build and Run the Containers
+Use a single command to build the image and start the containers.
+
+```bash
+npm run start:docker
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+### Option 2: Run from Pre-built Docker Hub Image (for checking)
+
+This option will download the pre-built image from Docker Hub and run it. It does not require building anything locally.
+
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/natapage/nodejs2025Q2-service.git
+cd nodejs2025Q2-service
+git checkout hl-part-2-development
+```
+
+#### 2. Create Environment File
+
+Create a `.env` file by copying the example file.
+
+```bash
+cp .env.example .env
+```
+
+#### 3. Run the Application
+
+This command will download the pre-built image from Docker Hub and start the containers.
+
+```bash
+npm run start:docker:prod
+```
+
+### Accessing the Application
+
+*   **API Documentation (Swagger):** [http://localhost:4000/doc](http://localhost:4000/doc)
+*   **Application Logs:** `docker-compose logs -f app` or `docker-compose -f docker-compose.prod.yml logs -f app`
+*   **Database Logs:** `docker-compose logs -f postgres-db` or `docker-compose -f docker-compose.prod.yml logs -f postgres-db`
+
+
+### Stopping the Application
+
+To stop the containers, run the corresponding `down` command depending on how you started them:
+```bash
+# For Option 1
+docker-compose down
+
+# For Option 2
+docker-compose -f docker-compose.prod.yml down
+```
+
+
+## Local Development (Without Docker)
+
+These instructions are for running the application directly on your machine without using Docker.
+
+### 1. Clone and Install
+
+```bash
+git clone https://github.com/natapage/nodejs2025Q2-service.git
+cd nodejs2025Q2-service
+git checkout hl-part-2-development
+```
+
+After switching the branch, install the project dependencies:
+```bash
+npm install
+```
+
+### 2. Configure Environment
+
+Create a `.env` file and update the `DATABASE_URL` to point to your local PostgreSQL instance.
+
+```bash
+cp .env.example .env
+```
+_For Windows, you can use `copy .env.example .env`_
+
+**Edit `.env` and set your `DATABASE_URL`:**
+`DATABASE_URL="postgresql://YOUR_USER:YOUR_PASSWORD@localhost:5432/YOUR_DATABASE?schema=public"`
+
+### 3. Run Migrations
+```bash
+npx prisma migrate dev
+```
+
+### 4. Run the App
+
+```bash
+npm run start:dev
+```
 
 ## Testing
 
-After application running open new terminal and enter:
+After the application is running, open a new terminal and enter:
 
-To run all tests without authorization
-
-```
+To run all tests:
+```bash
 npm run test
 ```
 
-To run only one of all test suites
+To run a specific test suite:
 
-```
+```bash
 npm test -- test/users.e2e.spec.ts
 npm test -- test/artists.e2e.spec.ts
 npm test -- test/albums.e2e.spec.ts
@@ -51,31 +144,6 @@ npm test -- test/favorites.e2e.spec.ts
 npm test -- test/tracks.e2e.spec.ts
 ```
 
-> Authorization for these tests is not implemented yet, so you do not need to check or run them.
-To run all test with authorization
+## License
 
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
-```
-
-### Auto-fix and format
-
-```
-npm run lint
-```
-
-```
-npm run format
-```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+This project is licensed under the MIT License.
