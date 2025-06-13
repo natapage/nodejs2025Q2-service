@@ -15,6 +15,8 @@ tags:
     description: Operations about tracks
   - name: favorites
     description: Operations about user favorites
+  - name: auth
+    description: Auth operations
 
 components:
   schemas:
@@ -830,3 +832,113 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Artist was not found.
+  /auth/signup:
+    post:
+      tags:
+        - auth
+      summary: Sign up
+      description: Creates a new user and returns it
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+              required:
+                - login
+                - password
+            example:
+              login: 'new_user'
+              password: 'new_password'
+      responses:
+        '201':
+          description: The user has been created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request. Body does not contain required fields.
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Log in
+      description: Logs a user in, returns access and refresh tokens.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+              required:
+                - login
+                - password
+            example:
+              login: 'new_user'
+              password: 'new_password'
+      responses:
+        '200':
+          description: Successful login.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    format: jwt
+                  refreshToken:
+                    type: string
+                    format: jwt
+        '400':
+          description: Bad request. Body does not contain required fields.
+        '403':
+          description: Forbidden. Invalid login or password.
+  /auth/refresh:
+    post:
+      tags:
+        - auth
+      summary: Refresh token
+      description: Get a new pair of access and refresh tokens.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                  format: jwt
+              required:
+                - refreshToken
+      responses:
+        '200':
+          description: Successful refresh.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    format: jwt
+                  refreshToken:
+                    type: string
+                    format: jwt
+        '403':
+          description: Forbidden. Refresh token is invalid or expired.
