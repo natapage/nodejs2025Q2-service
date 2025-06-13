@@ -15,7 +15,7 @@ This is the recommended way if you are developing the application. It will build
 ```bash
 git clone https://github.com/natapage/nodejs2025Q2-service.git
 cd nodejs2025Q2-service
-git checkout hl-part-2-development
+git checkout hl-part-3-development
 ```
 
 #### 2. Install Dependencies
@@ -94,7 +94,7 @@ These instructions are for running the application directly on your machine with
 ```bash
 git clone https://github.com/natapage/nodejs2025Q2-service.git
 cd nodejs2025Q2-service
-git checkout hl-part-2-development
+git checkout hl-part-3-development
 ```
 
 After switching the branch, install the project dependencies:
@@ -122,7 +122,7 @@ npx prisma migrate dev
 ### 4. Run the App
 
 ```bash
-npm run start:dev
+npm run start
 ```
 
 ## Testing
@@ -131,18 +131,9 @@ After the application is running, open a new terminal and enter:
 
 To run all tests:
 ```bash
-npm run test
+npm run test:auth
 ```
 
-To run a specific test suite:
-
-```bash
-npm test -- test/users.e2e.spec.ts
-npm test -- test/artists.e2e.spec.ts
-npm test -- test/albums.e2e.spec.ts
-npm test -- test/favorites.e2e.spec.ts
-npm test -- test/tracks.e2e.spec.ts
-```
 
 ## License
 
