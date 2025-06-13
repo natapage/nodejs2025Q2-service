@@ -8,6 +8,7 @@ import { AlbumsModule } from './albums/albums.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { LoggerModule } from './logger/logger.module';
 import { LoggingMiddleware } from './middleware/logging.middleware';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { LoggingMiddleware } from './middleware/logging.middleware';
     AlbumsModule,
     FavoritesModule,
     LoggerModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

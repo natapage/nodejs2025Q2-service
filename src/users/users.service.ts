@@ -30,6 +30,10 @@ export class UsersService {
     };
   }
 
+  findOneByLogin(login: string): User | undefined {
+    return this.users.find((u) => u.login === login);
+  }
+
   create(dto: CreateUserDto): Omit<User, 'password'> {
     const now = Date.now();
     const user: User = {

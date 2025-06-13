@@ -6,6 +6,7 @@ import { join } from 'path';
 import * as yaml from 'js-yaml';
 import { CustomLogger } from './logger/custom-logger.service';
 import { AllExceptionsFilter } from './exception-filter/exception.filter';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -15,6 +16,7 @@ async function bootstrap() {
   const logger = app.get(CustomLogger);
   app.useLogger(logger);
 
+  app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter(logger));
 
   const port = process.env.PORT || 4000;
